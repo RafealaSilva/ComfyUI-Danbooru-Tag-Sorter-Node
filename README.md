@@ -38,7 +38,7 @@ git clone https://github.com/RafealaSilva/ComfyUI-Danbooru-Tag-Sorter-Node.git
 1. 在 ComfyUI 中右键或双击鼠标左键打开节点搜索框
 2. 搜索 "Danbooru Tag Sorter"
 3. 将节点拖到工作区
-4. 连接标签输入或直接输入标签文本
+4. 连接标签输入或直接输入标签文本，搭配反推工作流表现优异
 5. 配置节点参数
 6. 运行工作流
 
