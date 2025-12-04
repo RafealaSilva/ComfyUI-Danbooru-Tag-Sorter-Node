@@ -24,7 +24,7 @@
 
 ### 方法二：Git 安装
 ```bash
-git clone https://github.com/RafealaSilva/comfyui-danbooru-tag-sorter.git
+git clone https://github.com/RafealaSilva/ComfyUI-Danbooru-Tag-Sorter-Node.git
 ```
 
 ### 依赖要求
