@@ -7,6 +7,8 @@
 一个高效的 Danbooru 标签分类器 ComfyUI 节点，能够自动将输入的杂乱 Danbooru 标签按照预设的分类系统进行智能分类和排序。  
 开发用于配合WD1.4反推图片使用。
 
+觉得有用请点个Star ~！
+
 ## ✨ 功能特点
 
 - **智能标签分类**：基于本地 Excel 数据库自动分类 Danbooru 标签，相比调用LLM更快、更省钱
@@ -39,8 +41,8 @@ git clone https://github.com/RafealaSilva/ComfyUI-Danbooru-Tag-Sorter-Node.git
 2. 搜索 "Danbooru Tag Sorter"
 3. 将节点拖到工作区
 4. 连接标签输入或直接输入标签文本，搭配反推工作流表现优异
-5. 配置节点参数
-6. 运行工作流
+5. 配置节点参数，Danbooru 标签表格在本项目文件夹tags_database中，直接复制绝对路径即可，记得删除两边的引号
+6. 运行工作流，第一次需要缓存数据比较慢，大概耗时3秒；第二次开始仅需不到0.01秒即可分类完成。（AMD-9700X）
 
 ### 输入示例
 ```text
