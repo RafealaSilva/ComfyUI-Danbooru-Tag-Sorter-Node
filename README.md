@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-green)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-一个高效的 Danbooru 标签分类器 ComfyUI 节点，能够自动将输入的杂乱 Danbooru 标签按照预设的分类系统进行智能分类和排序。  
+你是否还在为别人给的串很难看懂而烦恼？是否还在为反推出的一堆史山tag而焦虑？一个高效的 Danbooru 标签分类器 ComfyUI 节点，能够自动将输入的杂乱 Danbooru 标签按照预设的分类系统进行智能分类和排序。  
 开发用于配合WD1.4反推图片使用。
 
 觉得有用请点个Star ~！
