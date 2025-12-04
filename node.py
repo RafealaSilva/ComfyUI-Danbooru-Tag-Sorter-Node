@@ -10,6 +10,7 @@ import json
 # 全局缓存字典
 _tag_cache = {}
 
+
 # 处理类
 class DanbooruTagSorter:
     def __init__(self, excel_path, category_mapping, new_category_order, default_category="未归类词"):
@@ -18,11 +19,11 @@ class DanbooruTagSorter:
         self.new_category_order = new_category_order
         self.default_category = default_category
         self.tag_db = self._load_database_with_cache()
-    
+
     def get_new_category(self, original_category, original_subcategory):
         key = (original_category, original_subcategory)
         return self.category_mapping.get(key, self.default_category)
-    
+
     def _generate_cache_key(self):
         # 生成哈希键
         params = {
@@ -31,23 +32,23 @@ class DanbooruTagSorter:
             "new_category_order": json.dumps(self.new_category_order),
             "default_category": self.default_category
         }
-        
+
         # 将参数字典转换为字符串、并生成哈希
         params_str = json.dumps(params, sort_keys=True)
         cache_key = hashlib.md5(params_str.encode()).hexdigest()
         return cache_key
-    
+
     def _load_database_with_cache(self):
         # 生成缓存键
         cache_key = self._generate_cache_key()
 
         if cache_key in _tag_cache:
-            print(f"从缓存加载数据库: {self.excel_path}")
+            print(f"从缓存加载数据库喵:{self.excel_path}")
             return _tag_cache[cache_key]
         # 缓存没有就重载数据库
-        print(f"正在读取数据库: {self.excel_path} ...")
+        print(f"正在读取数据库喵:{self.excel_path} ...")
         if not os.path.exists(self.excel_path):
-            raise FileNotFoundError(f"找不到文件: {self.excel_path}")
+            raise FileNotFoundError(f"找不到文件喵:{self.excel_path}\n如果是复制绝对路径请删除两边引号喵")
         if self.excel_path.endswith('.csv'):
             df = pd.read_csv(self.excel_path)
         else:
@@ -59,7 +60,7 @@ class DanbooruTagSorter:
             sub = str(row['subcategory']).strip()
             new_cat = self.get_new_category(cat, sub)
             clean_key = eng_tag.replace('_', ' ')
-            
+
             tag_db[clean_key] = {
                 'original': eng_tag,
                 'original_category': cat,
@@ -67,24 +68,24 @@ class DanbooruTagSorter:
                 'new_category': new_cat,
                 'rank': index
             }
-        
-        print(f"数据库加载完成，共索引 {len(tag_db)} 个 Tags，已缓存。")
+
+        print(f"数据库加载完成喵，共索引 {len(tag_db)} 个 Tags喵，已缓存喵。")
 
         _tag_cache[cache_key] = tag_db
-        
+
         return tag_db
-    
+
     def process_tags(self, raw_string, add_category_comment=True):
         input_tags = [t.strip() for t in raw_string.split(',') if t.strip()]
-        
+
         new_category_buckets = defaultdict(list)
         unmatched_tags = []
-        
+
         # 匹配
         for tag in input_tags:
             tag_lower = tag.lower()
             lookup_key = tag_lower.replace('_', ' ')
-            
+
             if lookup_key in self.tag_db:
                 info = self.tag_db[lookup_key]
                 group_key = info['new_category']
@@ -97,21 +98,20 @@ class DanbooruTagSorter:
             categorized_tags[category] = ""
 
         final_lines = []
-        
+
         # 按照新分类顺序 输出
         for category in self.new_category_order:
             if category in new_category_buckets:
                 items = sorted(new_category_buckets[category], key=lambda x: x[0])
                 tags_str = ", ".join([item[1] for item in items])
                 categorized_tags[category] = tags_str
-                # 根据add_category_comment参数决定是否添加分类名称行
                 if add_category_comment:
                     final_lines.append(f"{category}:")
-                
+
                 final_lines.append(f"{tags_str},")
 
                 del new_category_buckets[category]
-        
+
         # 处理未在分类顺序中定义的新分类
         remaining_categories = list(new_category_buckets.keys())
         if remaining_categories:
@@ -120,23 +120,23 @@ class DanbooruTagSorter:
                 tags_str = ", ".join([item[1] for item in items])
                 if category not in categorized_tags:
                     categorized_tags[category] = tags_str
-                # 根据add_category_comment参数决定是否添加分类名称行
                 if add_category_comment:
                     final_lines.append(f"{category}:")
-                
+
                 final_lines.append(f"{tags_str},")
-        
+
         # 处理完全未识别的Tags
         if unmatched_tags:
             unmatched_str = ", ".join(unmatched_tags)
             final_lines.append(unmatched_str)
-            # 将未识别的标签添加到"未归类词"
+            # 将未识别的标签添加到未归类词
             if categorized_tags.get("未归类词"):
                 categorized_tags["未归类词"] += ", " + unmatched_str if categorized_tags["未归类词"] else unmatched_str
             else:
                 categorized_tags["未归类词"] = unmatched_str
-        
+
         return "\n".join(final_lines), categorized_tags
+
 
 # ComfyUI
 class DanbooruTagSorterNode:
@@ -147,7 +147,7 @@ class DanbooruTagSorterNode:
                 "tags": ("STRING", {
                     "multiline": True,
                     "default": "",
-                    "placeholder": "输入Danbooru标签，逗号分隔"
+                    "placeholder": "输入Danbooru标签喵，逗号分隔喵"
                 }),
             },
             "optional": {
@@ -234,12 +234,12 @@ class DanbooruTagSorterNode:
     ("镜头", "镜头角度"): "镜头词",
     ("镜头", "效果"): "镜头词",
 }""",
-                    "placeholder": "输入分类映射字典"
+                    "placeholder": "输入分类映射字典喵"
                 }),
                 "new_category_order": ("STRING", {
                     "multiline": True,
                     "default": "[\"画师词\", \"背景词\", \"人物对象词\", \"角色特征词\", \"角色五官词\", \"角色部位词\", \"性征部位词\", \"服饰词\", \"动作词\", \"角色表情词\", \"镜头词\", \"未归类词\"]",
-                    "placeholder": "输入新分类顺序列表"
+                    "placeholder": "输入新分类顺序列表喵"
                 }),
                 "default_category": ("STRING", {
                     "multiline": False,
@@ -255,12 +255,16 @@ class DanbooruTagSorterNode:
                 }),
             }
         }
-    
-    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING")
-    RETURN_NAMES = ("画师词", "背景词", "人物对象词", "角色特征词", "角色五官词", "角色部位词", "性征部位词", "服饰词", "动作词", "角色表情词", "镜头词", "未归类词", "ALL_TAGS")
+
+    RETURN_TYPES = (
+    "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING",
+    "STRING", "STRING")
+    RETURN_NAMES = (
+    "画师词", "背景词", "人物对象词", "角色特征词", "角色五官词", "角色部位词", "性征部位词", "服饰词", "动作词",
+    "角色表情词", "镜头词", "未归类词", "ALL_TAGS")
     FUNCTION = "process"
     CATEGORY = "Danbooru Tags"
-    
+
     def process(self, tags, excel_file="", category_mapping="",
                 new_category_order="", default_category="未归类词", force_reload=False, is_comment=True):
         try:
@@ -269,36 +273,36 @@ class DanbooruTagSorterNode:
                 try:
                     category_mapping_dict = ast.literal_eval(category_mapping)
                     if not isinstance(category_mapping_dict, dict):
-                        raise ValueError("category_mapping 必须是字典格式")
+                        raise ValueError("category_mapping必须是字典格式喵")
                 except Exception as e:
-                    print(f"解析 category_mapping 失败，使用默认值: {e}")
+                    print(f"解析category_mapping失败喵，使用默认值喵:{e}")
                     category_mapping_dict = self._get_default_mapping()
             else:
                 category_mapping_dict = self._get_default_mapping()
-            
+
             if new_category_order:
                 try:
                     new_category_order_list = ast.literal_eval(new_category_order)
                     if not isinstance(new_category_order_list, list):
-                        raise ValueError("new_category_order必须是列表格式")
+                        raise ValueError("new_category_order必须是列表格式喵")
                 except Exception as e:
-                    print(f"解析 new_category_order失败，使用默认值: {e}")
+                    print(f"解析new_category_order失败喵，使用默认值喵:{e}")
                     new_category_order_list = self._get_default_order()
             else:
                 new_category_order_list = self._get_default_order()
 
             if not excel_file:
                 excel_file = ""
-            
+
             # 检查文件是否存在
             if not os.path.exists(excel_file):
-                raise FileNotFoundError(f"库不存在: {excel_file}")
-            
+                raise FileNotFoundError(f"库不存在喵:{excel_file}\n如果是复制绝对路径请删除两边引号喵")
+
             # 如果强制重新加载，清除相关缓存
             if force_reload:
                 self._clear_cache(excel_file, category_mapping_dict, new_category_order_list, default_category)
-                print("已清除缓存，将重新加载库")
-            
+                print("已清除缓存喵，将重新加载库喵")
+
             # 创建分类器并处理标签
             sorter = DanbooruTagSorter(
                 excel_file,
@@ -306,10 +310,10 @@ class DanbooruTagSorterNode:
                 new_category_order_list,
                 default_category
             )
-            
+
             # 传递is_comment参数给process_tags方法
             all_tags_result, categorized_tags = sorter.process_tags(tags, add_category_comment=is_comment)
-            
+
             # 按照固定顺序输出
             output_order = self._get_default_order()
             outputs = []
@@ -317,14 +321,14 @@ class DanbooruTagSorterNode:
                 tag_output = categorized_tags.get(category, "")
                 outputs.append(tag_output)
             outputs.append(all_tags_result)
-            
+
             return tuple(outputs)
-            
+
         except Exception as e:
-            print(f"DanbooruTagSorterNode 错误: {e}")
+            print(f"DanbooruTagSorterNode错误喵，气死了喵:{e}")
             empty_outputs = [""] * 13
             return tuple(empty_outputs)
-    
+
     def _get_default_mapping(self):
         return {
             ("画面", "艺术家风格"): "画师词",
@@ -404,10 +408,11 @@ class DanbooruTagSorterNode:
             ("镜头", "镜头角度"): "镜头词",
             ("镜头", "效果"): "镜头词",
         }
-    
+
     def _get_default_order(self):
-        return ["画师词", "背景词", "人物对象词", "角色特征词", "角色五官词", "角色部位词", "性征部位词", "服饰词", "动作词", "角色表情词", "镜头词", "未归类词"]
-    
+        return ["画师词", "背景词", "人物对象词", "角色特征词", "角色五官词", "角色部位词", "性征部位词", "服饰词",
+                "动作词", "角色表情词", "镜头词", "未归类词"]
+
     def _clear_cache(self, excel_file, category_mapping, new_category_order, default_category):
         try:
             # 创建个临时的sorter生成缓存键
@@ -417,34 +422,36 @@ class DanbooruTagSorterNode:
                 new_category_order,
                 default_category
             )
-            
+
             cache_key = temp_sorter._generate_cache_key()
             if cache_key in _tag_cache:
                 del _tag_cache[cache_key]
-                print(f"已清除缓存: {cache_key}")
+                print(f"已清除缓存喵:{cache_key}")
         except Exception as e:
-            print(f"清除缓存失败: {e}")
+            print(f"清除缓存失败了喵:{e}")
 
-class DanbooruTagClearCacheNode: # 手动清除缓存
+
+class DanbooruTagClearCacheNode:  # 手动清除缓存
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {},
             "optional": {}
         }
-    
+
     RETURN_TYPES = ()
     RETURN_NAMES = ()
     FUNCTION = "clear_cache"
     CATEGORY = "Danbooru Tags"
     OUTPUT_NODE = True
-    
+
     def clear_cache(self):
         global _tag_cache
         cache_count = len(_tag_cache)
         _tag_cache.clear()
-        print(f"已清除所有Danbooru Tags缓存 ({cache_count} 个缓存项)")
+        print(f"已清除所有DanbooruTags缓存喵({cache_count}个缓存项喵)")
         return ()
+
 
 # Register nodes
 NODE_CLASS_MAPPINGS = {
