@@ -1,14 +1,11 @@
 """
-Danbooru Tag Sorter for ComfyUI
-A custom node for sorting and categorizing Danbooru tags
+@author: RafealaSilva
+@title: Danbooru Tag Sorter
+@nickname: Danbooru Sorter
+@description: A ComfyUI node to sort and classify Danbooru tags into customizable categories (Packer/Extractor workflow).
 """
-from .node import (DanbooruTagSorterNode, DanbooruTagClearCacheNode, NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
-                   )
+from .node import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+def __init__():
+    pass
+__all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
 
-NODE_CLASS_MAPPINGS = NODE_CLASS_MAPPINGS
-NODE_DISPLAY_NAME_MAPPINGS = NODE_DISPLAY_NAME_MAPPINGS
-
-__all__ = [
-    'DanbooruTagSorterNode', 'DanbooruTagClearCacheNode',
-    'NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS'
-]
