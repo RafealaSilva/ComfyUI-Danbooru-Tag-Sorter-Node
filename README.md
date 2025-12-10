@@ -53,6 +53,12 @@ git clone https://github.com/RafealaSilva/ComfyUI-Danbooru-Tag-Sorter-Node.git
 pip install openpyxl pandas
 ```
 
+或者
+
+```bash
+pip install -r requirements.txt
+```
+
 **请将这两个库安装在 ComfyUI 的 Python 环境中！不要 cmd 直接安装在系统环境里！**
 
 ## 🎮 使用方法
