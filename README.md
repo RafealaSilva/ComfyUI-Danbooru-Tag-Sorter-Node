@@ -1,4 +1,4 @@
-# ComfyUI Danbooru 标签分类器 (Danbooru Tag Sorter)
+# ComfyUI Danbooru 标签分类器 (Danbooru Tag Sorter - Packer/Extractor)
 
 [](https://github.com/comfyanonymous/ComfyUI)
 [](https://www.python.org/)
