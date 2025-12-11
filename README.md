@@ -1,4 +1,4 @@
-# ComfyUI Danbooru 标签分类器 V2.0 (Danbooru Tag Sorter - Packer/Extractor)
+# ComfyUI Danbooru 标签分类器 V2.1 (Danbooru Tag Sorter - Packer/Extractor)
 
 [](https://github.com/comfyanonymous/ComfyUI)
 [](https://www.python.org/)
@@ -8,7 +8,12 @@
 一个高效的 Danbooru 标签分类器 ComfyUI 节点，能够自动将输入的杂乱 Danbooru 标签按照您自定义的类别，在**毫秒级**进行智能分类和排序！  
 开发用于配合 WD1.4 反推图片使用。
 
-觉得有用请点个 Star \~！
+觉得有用请点个 Star 吧\~！
+
+## V2.1 Update
+
+1. 优化了配置校验逻辑：现在可以在关闭校验（即节点中validation值为False）的情况下，通过从 `Order` 列表（即节点第三个文本框）中删除分类以屏蔽该分类的独立输出，同时将其 Tags 保留，归入“未分类词”。
+2. 优化了数据库路径：现在若用户仅输入数据库名称，则节点默认查找本项目根目录的 `tags_database` 文件夹中的 **Excel / CSV** 文件；同时兼容用户输入绝对路径。
 
 ## V2.0 Update
 
